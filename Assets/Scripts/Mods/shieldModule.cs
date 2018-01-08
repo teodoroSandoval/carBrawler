@@ -49,13 +49,15 @@ public class shieldModule : MonoBehaviour {
                 isDeployd = true;
                 castingTimer.use();
                 shieldPrefab.SetActive(true);
-                health.invulnerable = true;
+                if(health != null)
+                    health.invulnerable = true;
             }
             else {
                 if (Input.GetButtonUp(Setup.LShoulder)) {
                     isDeployd = false;
                     castingTimer.use();
-                    health.invulnerable = false;
+                    if (health != null)
+                        health.invulnerable = false;
                 }
             }
 
