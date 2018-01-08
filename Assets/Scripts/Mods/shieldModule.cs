@@ -13,16 +13,26 @@ public class shieldModule : MonoBehaviour {
     private bool isActive = false;
     private CarSetup Setup;
 
+    private HealthModule health;
     // Use this for initialization
     void Start () {
+        health = GetComponent<HealthModule>();
 
         layer = LayerMask.NameToLayer("shield");
         Setup = GetComponent<CarSetup>();
-
-        shieldPrefab = new GameObject("shield");
         
         shieldPrefab = Instantiate( Resources.Load<GameObject>("shieldSphere"),transform);
+        shieldPrefab.name = "shield";
+        GameObject collider = CarSetup.FindGameObjectInChildWithName(shieldPrefab.transform,"collider")[0];
+        collider.SetActive(false);
+        MeshCollider coll = shieldPrefab.AddComponent<MeshCollider>();
+
+        coll.sharedMesh = collider.GetComponent<MeshFilter>().sharedMesh;
+        coll.convex = true;
+        coll.sharedMaterial = Resources.Load<PhysicMaterial>("PhysicsMaterials/noFriction");
+        shieldPrefab.layer = layer;
         shieldPrefab.transform.localScale = Vector3.zero;
+         
         shieldPrefab.SetActive(false);
 
         castingTimer = new Cooldown();
@@ -39,11 +49,13 @@ public class shieldModule : MonoBehaviour {
                 isDeployd = true;
                 castingTimer.use();
                 shieldPrefab.SetActive(true);
+                health.invulnerable = true;
             }
             else {
                 if (Input.GetButtonUp(Setup.LShoulder)) {
                     isDeployd = false;
                     castingTimer.use();
+                    health.invulnerable = false;
                 }
             }
 

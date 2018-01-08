@@ -7,8 +7,6 @@ public class CameraSetting : MonoBehaviour {
 
     private GameObject setCar(GameObject originalCar,Vector3 position, Quaternion rotation , int selfLayer, Camera camera, GameObject canvas) {
 
-
-
         GameObject car = Instantiate(originalCar, position, rotation);
 
         CarSetup.SetLayerAll(car.transform,selfLayer);
@@ -17,8 +15,6 @@ public class CameraSetting : MonoBehaviour {
 
         carSetup.asBot = false;
         carSetup.camera = camera;
-
-        //GameObject newGuiElements = new GameObject("guiElements");
 
         GameObject newCanvas = Instantiate(canvas);
 
