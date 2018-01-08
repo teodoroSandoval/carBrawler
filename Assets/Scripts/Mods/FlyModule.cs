@@ -10,7 +10,7 @@ public class FlyModule : MonoBehaviour {
     private BasicMovement moveManager;
     private Cooldown flyCooldown;
     private Cooldown flyGauge;
-    public Slider flySlider;
+    private Slider flySlider;
 
     public float flyCD = 5.0f;
     public float flyLength = 2.0f;
@@ -29,6 +29,7 @@ public class FlyModule : MonoBehaviour {
     void Start () {
         Setup = GetComponent<CarSetup>();
 
+        flySlider = Setup.canvas.transform.Find("Slider2").GetComponent<Slider>();
         moveManager = GetComponent<BasicMovement>();
         flyGauge = new Cooldown();
         flyGauge.init(flyLength,flyCD, recoveryCD);

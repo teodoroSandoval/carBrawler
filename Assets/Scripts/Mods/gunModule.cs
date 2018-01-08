@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class gunModule : MonoBehaviour {
-    public LayerMask layer;
+    private int layer;
     private GameObject bulletPrefab;
     private GameObject bulletDecal;
 
     private GameObject[] guns;
 
-    public Material material;
+    private Material material;
     public float bulletSpeed = 10;
     public Vector3 outputOffset = Vector3.zero;
 
@@ -26,11 +26,14 @@ public class gunModule : MonoBehaviour {
     private CarSetup Setup;
     // Use this for initialization
     void Start () {
+        layer = gameObject.layer;
+
         Setup = GetComponent<CarSetup>();
+
+        material = Setup.intenceRed;
 
         guns = CarSetup.FindGameObjectInChildWithName(transform,"gun");
 
-        Debug.Log(guns.Length + " guns found");
         bulletCD = 1 / rateOfFire;
         bulletPrefab = new GameObject("bullet");
         bulletPrefab.SetActive(false);

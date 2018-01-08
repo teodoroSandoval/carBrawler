@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class explosiveController : MonoBehaviour {
-    public LayerMask layer;
+    public int layer;
     public bool useSensor = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
     public float explotionForce = 1000;
@@ -20,9 +20,6 @@ public class explosiveController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        if (useSensor) {
-
-        }
 	}
 
     private void explote() {
@@ -33,26 +30,23 @@ public class explosiveController : MonoBehaviour {
         Destroy(gameObject);
     }
     
-    public static void addExplotion(Vector3 position,float force, float radius, float damage, LayerMask layer) {
+    public static void addExplotion(Vector3 position,float force, float radius, float damage, int layer) {
         Collider[] targets = Physics.OverlapSphere(position, radius);
         List<GameObject> targetList = new List<GameObject>();
 
         foreach(Collider hit in targets) {
             if (!targetList.Contains(hit.gameObject)) {
                 targetList.Add(hit.gameObject);
-                if (hit.tag.Contains("Player") && ((1 << hit.gameObject.layer) & layer) != 0) {
+                if (hit.transform.root.tag.Contains("Player") && hit.gameObject.layer != layer) {
                     float finalDamage = (radius - Vector3.Distance(position, hit.ClosestPoint(position))) / radius * damage;
-
-                    if (hit.attachedRigidbody != null)
-                        hit.attachedRigidbody.gameObject.SendMessage("damage", finalDamage);
-                    else
-                        Debug.Log("not rigid body attached to this target");
+                    hit.transform.root.SendMessage("damage", finalDamage);
                 }
 
                 Rigidbody rb = hit.attachedRigidbody;
                 if (rb != null) {
                     rb.AddExplosionForce(force, position, radius);
                 }
+
             }
         }
     }
@@ -64,7 +58,7 @@ public class explosiveController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag.Contains("Player") && transform.parent == null) {
+        if (collision.transform.root.tag.Contains("Player") && transform.parent == null) {
             explote();
         }
     }

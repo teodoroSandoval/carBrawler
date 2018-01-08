@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class mineModule : MonoBehaviour {
-    public LayerMask layer;
+    private int layer;
     private GameObject minePrefab;
     private GameObject mineDecal;
-    public Material material;
+    private Material material;
     
     public int stock = 10;
     private int used = 0;
@@ -24,7 +24,10 @@ public class mineModule : MonoBehaviour {
     // Use this for initialization
 
     void Start () {
+        layer = gameObject.layer;
         Setup = GetComponent<CarSetup>();
+
+        material = Setup.intenceRed;
 
         minePrefab = new GameObject("mine");
         minePrefab.SetActive(false);
@@ -49,7 +52,7 @@ public class mineModule : MonoBehaviour {
         rb.mass = 5;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-        minePrefab.layer = LayerMask.NameToLayer("weapons");
+        minePrefab.layer = layer;
 
         explosiveController explosive = minePrefab.AddComponent<explosiveController>();
         explosive.useSensor = true;

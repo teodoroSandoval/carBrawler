@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ProyectileMode { bullet, missile }
 public class proyectileController : MonoBehaviour {
-    public LayerMask layer;
+    public int layer;
     
     public float speed;
     public Vector3 aditionalSpeed = Vector3.zero;
@@ -28,9 +28,13 @@ public class proyectileController : MonoBehaviour {
 	}
 
     private bool collitionActive = false;
+    private LayerMask layerMask;
     private void Awake() {
-        if(mode == ProyectileMode.bullet)
+        if (mode == ProyectileMode.bullet)
             finalMoveVector = (transform.forward * speed) + aditionalSpeed;
+
+        layerMask = ~((1<<layer)| Physics.IgnoreRaycastLayer);
+
 
         if (mode == ProyectileMode.missile) {
             lastPosition = transform.position;
@@ -44,13 +48,13 @@ public class proyectileController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (mode == ProyectileMode.bullet) {
-            if (Physics.Raycast(transform.position, finalMoveVector, out hit, finalMoveVector.magnitude * Time.deltaTime,layer)) {
+            if (Physics.Raycast(transform.position, finalMoveVector, out hit, finalMoveVector.magnitude * Time.deltaTime, layerMask)) {
 
                 if (hit.rigidbody) {
                     hit.rigidbody.AddForceAtPosition(finalMoveVector,hit.point,ForceMode.Impulse);
                 }
 
-                if (hit.collider.tag.Contains("Player")) { hit.rigidbody.gameObject.SendMessage("damage", damage); }
+                if (hit.transform.root.tag.Contains("Player")) { hit.rigidbody.gameObject.SendMessage("damage", damage); }
                 else {
                     GameObject dec = Instantiate(decal, hit.point + (hit.normal * CarSetup.minSurfaceDistance), Quaternion.LookRotation(hit.normal),hit.transform);
                     dec.AddComponent<LifeTime>().lifeTime = 30;
@@ -88,7 +92,7 @@ public class proyectileController : MonoBehaviour {
             ContactPoint hit = collision.contacts[0];
             explosiveController.addExplotion(hit.point,explotionForce,explotionRadius,damage,layer);
 
-            if (!collision.gameObject.tag.Contains("Player")) {
+            if (!collision.transform.root.tag.Contains("Player")) {
                 GameObject dec = Instantiate(decal, hit.point + (hit.normal * CarSetup.minSurfaceDistance), Quaternion.LookRotation(hit.normal), collision.transform);
                 dec.AddComponent<LifeTime>().lifeTime = 30;
                 dec.SetActive(true);

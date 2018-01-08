@@ -16,7 +16,7 @@ public class SelfSlider : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         camera = GameObject.Find("Camera_01").GetComponent<Camera>();
-        rect = GetComponent<HealthModule>().healthSlider.GetComponent<RectTransform>();
+        //rect = GetComponent<HealthModule>().healthSlider.GetComponent<RectTransform>();
         CanvasRect = canvas.GetComponent<RectTransform>();
     }
 	

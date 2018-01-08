@@ -6,13 +6,15 @@ using UnityEngine.UI;
 public class HealthModule : MonoBehaviour {
 
     private float currentHealth;
-    public float maxHealth = 100;
-    public Slider healthSlider;
+    public float maxHealth = 1000;
+    private Slider healthSlider;
 
     public bool isDead { get; private set; }
     private bool isActive = false;
     // Use this for initialization
     void Start () {
+         
+        healthSlider = GetComponent<CarSetup>().canvas.transform.Find("Slider1").GetComponent<Slider>();
         currentHealth = maxHealth;
         isDead = false;
         healthSlider.maxValue = maxHealth;

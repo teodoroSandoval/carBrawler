@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class shieldModule : MonoBehaviour {
 
-    public LayerMask layer;
+    private int layer;
     private GameObject shieldPrefab;
     private bool isDeployd = false;
     public float castTime = 0.2f;
@@ -15,6 +15,8 @@ public class shieldModule : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        layer = LayerMask.NameToLayer("shield");
         Setup = GetComponent<CarSetup>();
 
         shieldPrefab = new GameObject("shield");
@@ -48,14 +50,14 @@ public class shieldModule : MonoBehaviour {
             if (isDeployd) {
                 if (castingTimer.onCooldown) {
                     float scl = castingTimer.CDPercent;
-                    Debug.Log(scl);
+                    //Debug.Log(scl);
                     shieldPrefab.transform.localScale = new Vector3(scl, scl, scl);
                 }
             }
             else {
                 if (castingTimer.onCooldown) {
                     float scl = 1 - castingTimer.CDPercent;
-                    Debug.Log(scl);
+                    //Debug.Log(scl);
                     shieldPrefab.transform.localScale = new Vector3(scl, scl, scl);
                 }
                 else {

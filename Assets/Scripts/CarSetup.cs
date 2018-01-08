@@ -34,49 +34,22 @@ public class CarSetup : MonoBehaviour {
     private WheelCollider[] wheelsTractionCollider;
     public Material defaultMaterial;
     public Material deadTexture;
+    public Material transparentRedTexture;
+    public Material intenceRed;
     public PhysicMaterial defaultPhMat;
+
+    public Camera camera;
+    public Canvas canvas;
     // Use this for initialization
 
-    
+
     void Start() {
 
         deadTexture = Resources.Load<Material>("Materials/gray");
-
-        //defaultMaterial = Resources.Load<Material>("Materials/defaultMaterial");
+        defaultMaterial = Resources.Load<Material>("Materials/defaultMaterial");
         defaultPhMat = Resources.Load<PhysicMaterial>("PhysicsMaterials/defaultObject");
-        if (asBot) {
-            playerName = "bot";
-            isActive = true;
-            gameObject.SendMessage("SetActive", true);
-
-            Debug.Log("setted a bot");
-        }
-        else {
-            playerID = PlayersData.getPlayer();
-            if (playerID < 0) {
-                isActive = false;
-                gameObject.SendMessage("SetActive", false);
-            }
-            else {
-                isActive = true;
-                playerName = "P" + playerID;
-                gameObject.SendMessage("SetActive", true);
-            }
-            Debug.Log("setted a human");
-        }
-
-        LSHor = playerName + "_LeftHor";
-        LSVer = playerName + "_LeftVer";
-        RSHor = playerName + "_RightHor";
-        RSVer = playerName + "_RightVer";
-        accelerationAxis = playerName + "_Acceleration";
-        triangle = playerName + "_Fire3";
-        square = playerName + "_Fire2";
-        circle = playerName + "_Fire1";
-        cross = playerName + "_Jump";
-        LShoulder = playerName + "_Launch1";
-        RShoulder = playerName + "_Launch2";
-
+        transparentRedTexture = Resources.Load<Material>("Materials/redTransparent");
+        intenceRed = Resources.Load<Material>("Materials/intenceRed");
         // SET BASE CAR
         Rigidbody carRB = gameObject.AddComponent<Rigidbody>();
         carRB.mass = 50;
@@ -239,6 +212,16 @@ public class CarSetup : MonoBehaviour {
         }
     }
 
+    static public void SetLayerAll(Transform parent, int layer) {
+
+        parent.gameObject.layer = layer;
+
+        if(parent.childCount > 0) {
+            foreach (Transform child in parent)
+                SetLayerAll(child,layer);
+        }
+        return;
+    }
     public bool IsCarGrounded() {
         bool isGr = false;
         foreach (WheelCollider wheel in wheelsCollider) {
@@ -275,5 +258,40 @@ public class CarSetup : MonoBehaviour {
 
         isActive = false;
         gameObject.SendMessage("SetActive", false);
+    }
+
+    public void Set() {
+        if (asBot) {
+            playerName = "bot";
+            isActive = true;
+            gameObject.SendMessage("SetActive", true);
+
+            Debug.Log("setted a bot");
+        }
+        else {
+            playerID = PlayersData.getPlayer();
+            if (playerID < 0) {
+                isActive = false;
+                gameObject.SendMessage("SetActive", false);
+            }
+            else {
+                isActive = true;
+                playerName = "P" + playerID;
+                gameObject.SendMessage("SetActive", true);
+            }
+            Debug.Log("setted a human");
+        }
+
+        LSHor = playerName + "_LeftHor";
+        LSVer = playerName + "_LeftVer";
+        RSHor = playerName + "_RightHor";
+        RSVer = playerName + "_RightVer";
+        accelerationAxis = playerName + "_Acceleration";
+        triangle = playerName + "_Fire3";
+        square = playerName + "_Fire2";
+        circle = playerName + "_Fire1";
+        cross = playerName + "_Jump";
+        LShoulder = playerName + "_Launch1";
+        RShoulder = playerName + "_Launch2";
     }
 }

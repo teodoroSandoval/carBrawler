@@ -9,11 +9,6 @@ public class BasicMovement : MonoBehaviour {
     public static Vector3 velocity { get; private set; }
 
     private string directionAxis;
-    // index dictionary
-    private int FL = 0; // Front Left
-    private int FR = 1; // Front Right
-    private int BL = 2; // Back Left
-    private int BR = 3; // Back Right
 
     // wheels
     private GameObject[] wheelsDirAxis;
