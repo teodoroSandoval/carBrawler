@@ -96,17 +96,10 @@ public class missileModule : MonoBehaviour {
                     
                     float hor = Input.GetAxis(Setup.RSHor);
                     float ver = -Input.GetAxis(Setup.RSVer);
-                    float size = 2.5f;
-
 
                     Vector3 ViewportPosition = new Vector3((hor * 1) + 1, (ver * 1) + 1, 2) * 0.5f;
 
-                    //camera.rect;
-
                     Vector3 newViewportPosition = new Vector3((hor * CanvasRect.sizeDelta.x) / 2, (ver * CanvasRect.sizeDelta.y) / 2,camera.nearClipPlane);
-
-                    //newViewportPosition += new Vector2(0, CanvasRect.sizeDelta.y / 2);
-                    //newViewportPosition = new Vector2((camera.rect.position.x* CanvasRect.sizeDelta.x)+ (newViewportPosition.x * camera.rect.width), (camera.rect.position.y * CanvasRect.sizeDelta.y) + (newViewportPosition.y* camera.rect.height));
 
                     targetingRect.anchoredPosition = newViewportPosition;
                     Vector3 newPosition = camera.ViewportToWorldPoint(ViewportPosition);
@@ -128,6 +121,7 @@ public class missileModule : MonoBehaviour {
                             else {
                                 GameObject decoi = new GameObject("decoi");
                                 decoi.transform.position = hit.point;
+                                decoi.AddComponent<LifeTime>().lifeTime = CarSetup.globalLifetime;
                                 launchMissile(decoi.transform);
                             }
                         }

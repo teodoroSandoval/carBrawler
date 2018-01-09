@@ -5,7 +5,7 @@ using UnityEngine;
 public class CarSetup : MonoBehaviour {
 
     public static float minSurfaceDistance = 0.0001f;
-
+    public static float globalLifetime = 20;
 
     public bool asBot = false;
 

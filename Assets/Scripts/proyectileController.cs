@@ -57,7 +57,7 @@ public class proyectileController : MonoBehaviour {
                 if (hit.transform.root.tag.Contains("Player")) { hit.rigidbody.gameObject.SendMessage("damage", damage); }
                 else {
                     GameObject dec = Instantiate(decal, hit.point + (hit.normal * CarSetup.minSurfaceDistance), Quaternion.LookRotation(hit.normal),hit.transform);
-                    dec.AddComponent<LifeTime>().lifeTime = 30;
+                    dec.AddComponent<LifeTime>().lifeTime = CarSetup.globalLifetime;
                     dec.SetActive(true);
                 }
 
@@ -94,7 +94,7 @@ public class proyectileController : MonoBehaviour {
 
             if (!collision.transform.root.tag.Contains("Player")) {
                 GameObject dec = Instantiate(decal, hit.point + (hit.normal * CarSetup.minSurfaceDistance), Quaternion.LookRotation(hit.normal), collision.transform);
-                dec.AddComponent<LifeTime>().lifeTime = 30;
+                dec.AddComponent<LifeTime>().lifeTime = CarSetup.globalLifetime;
                 dec.SetActive(true);
             }
             Destroy(gameObject);

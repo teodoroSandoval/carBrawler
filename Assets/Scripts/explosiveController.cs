@@ -24,7 +24,7 @@ public class explosiveController : MonoBehaviour {
 
     private void explote() {
         GameObject newDecal = Instantiate(decal, transform.position + (transform.up * CarSetup.minSurfaceDistance), Quaternion.LookRotation(transform.up), transform.parent);
-        newDecal.AddComponent<LifeTime>().lifeTime = 30;
+        newDecal.AddComponent<LifeTime>().lifeTime = CarSetup.globalLifetime;
         newDecal.SetActive(true);
         addExplotion(transform.position, explotionForce, explotionRadius, damage, layer);
         Destroy(gameObject);
