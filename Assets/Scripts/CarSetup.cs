@@ -79,9 +79,9 @@ public class CarSetup : MonoBehaviour {
         wheelsCollider = new WheelCollider[wheelsRotAxis.Length];
 
         JointSpring spring = new JointSpring();
-        spring.spring = 10000;
-        spring.damper = 70;
-        spring.targetPosition = 0.5f;
+        spring.spring = 8000;
+        spring.damper = 85;
+        spring.targetPosition = 0.3f;
 
         WheelFrictionCurve forwardFrCurve = new WheelFrictionCurve();
         forwardFrCurve.extremumSlip = 1.4f;
