@@ -11,6 +11,7 @@ public class DroneMovement : MonoBehaviour {
     public Vector3 newPosition;
     public float minDistance = 0.1f;
     private bool isActive = false;
+    private bool isHumanActive = false;
     public float forceMultiplyer = 2000;
     public float minForce = 196f;
 
@@ -18,9 +19,10 @@ public class DroneMovement : MonoBehaviour {
 
     public float idleHeight = 1;
     private Rigidbody rb;
+
+
     void Start() {
         //layerMask = (1 << LayerMask.NameToLayer("mapOnly"));
-
 
         if (target != null) {
             newPosition = target.position - target.forward * camDistance;
@@ -65,9 +67,20 @@ public class DroneMovement : MonoBehaviour {
                 
         }
 
+        if (isHumanActive) {
+            
+            float hor = Input.GetAxis("horAxis");
+            float ver = Input.GetAxis("vertAxis");
+
+            currforce += ((transform.forward * ver) + (transform.right * hor))* forceMultiplyer;
+        }
+
     }
 
     public void SetActive(bool activeState) {
         isActive = activeState;
+    }
+    public void SetHumanActive(bool activeState) {
+        isHumanActive = activeState;
     }
 }

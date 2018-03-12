@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class picker : MonoBehaviour {
 
-    private Transform camera;
+    public Transform camera;
 
     private bool hasPicked;
     private Transform pickedObject;
@@ -19,16 +19,15 @@ public class picker : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        camera = transform.Find("Camera_01");
+        //camera = transform.Find("Camera_01");
         hasPicked = false;
-
     }
 
     private RaycastHit hit;
 	// Update is called once per frame
 	void Update () {
 
-        targetPosition = camera.transform.position + (camera.transform.forward * frontScaler);
+        targetPosition = camera.position + (camera.forward * frontScaler);
 
         if (!grabbed) {
             if (Input.GetMouseButtonDown(0)) {
@@ -48,20 +47,23 @@ public class picker : MonoBehaviour {
                 pickedObject.position += (targetPosition - pickedObject.position) * dragSpeed * Time.deltaTime;
                 pickedObject.rotation = Quaternion.Lerp(Quaternion.LookRotation(pickedObject.forward), Quaternion.LookRotation(camera.forward), rotSpeed * Time.deltaTime);
 
-                Debug.Log(Vector3.Distance(pickedObject.transform.position, targetPosition));
                 if (Vector3.Distance(pickedObject.transform.position, targetPosition) < grabDistance) {
                     grabObject();
                 }
             }
         } else {
-            pickedObject.position = targetPosition;
-            pickedObject.rotation = Quaternion.LookRotation(camera.forward);
+            //pickedObject.parent.position = targetPosition;
+            //pickedObject.parent.rotation = Quaternion.LookRotation(camera.forward);
         }
     }
 
     private void grabObject() {
         grabbed = true;
 
-        
+        DroneVisor drone = pickedObject.GetComponent<DroneVisor>();
+
+        if(drone != null) {
+            drone.transferDroneControl(camera.gameObject,gameObject);
+        }
     }
 }

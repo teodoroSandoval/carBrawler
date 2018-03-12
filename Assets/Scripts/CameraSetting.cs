@@ -57,7 +57,7 @@ public class CameraSetting : MonoBehaviour {
 	void Start () {
         GameObject canvas = GameObject.Find("Canvas");
 
-        canvas.SetActive(false);
+        //canvas.SetActive(false);
         if (PlayersData.readyCount == 1) {
             CameraController camContrl = gameObject.AddComponent<CameraController>();
             GameObject car = setCar(GameObject.Find("Car1"),new Vector3(-0.5f,1.1f,0.5f),Quaternion.AngleAxis(-45,Vector3.up), LayerMask.NameToLayer("player1"), GetComponent<Camera>(), canvas, Resources.Load<Material>("Materials/defaultMaterial"));
