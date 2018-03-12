@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class mineModule : MonoBehaviour {
+public class MineModule : MonoBehaviour {
     private int layer;
     private GameObject minePrefab;
     private GameObject mineDecal;
     private Material material;
     
-    public int stock = 10;
+    public int stock = 100;
     private int used = 0;
     public float explotionDamage = 300;
     public float sensorSize = 0.1f;
     public float sensorHeight=0.015f;
     public int sensorDefinition = 16;
-    public float explotionForce = 2000;
-    public float explotionRadius = 1;
+    public float explotionForce = 3500;
+    public float explotionRadius = 0.5f;
 
     private bool isActive = false;
 
@@ -54,7 +54,7 @@ public class mineModule : MonoBehaviour {
 
         minePrefab.layer = layer;
 
-        explosiveController explosive = minePrefab.AddComponent<explosiveController>();
+        ExplosiveController explosive = minePrefab.AddComponent<ExplosiveController>();
         explosive.useSensor = true;
         explosive.damage = explotionDamage;
         explosive.layer = layer;

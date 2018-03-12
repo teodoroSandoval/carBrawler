@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gunModule : MonoBehaviour {
+public class GunModule : MonoBehaviour {
     private int layer;
     private GameObject bulletPrefab;
     private GameObject bulletDecal;
@@ -44,7 +44,7 @@ public class gunModule : MonoBehaviour {
         bulletDecal = Resources.Load<GameObject>("bulletHit");
 
         CarSetup.initMesh(bulletPrefab,Resources.Load<Mesh>("bullet"), material);
-        proyectileController bullet = bulletPrefab.AddComponent<proyectileController>();
+        ProyectileController bullet = bulletPrefab.AddComponent<ProyectileController>();
         bullet.mode = ProyectileMode.bullet;
         bullet.speed = bulletSpeed;
         bullet.damage = bulletDamage;
@@ -82,8 +82,8 @@ public class gunModule : MonoBehaviour {
         Vector3 offSet = (cannon.right * outputOffset.x) + (cannon.up * outputOffset.y) + (cannon.forward * outputOffset.z);
 
         GameObject bullet = Instantiate(bulletPrefab, cannon.position + offSet, cannon.rotation * Quaternion.Euler(Random.Range(-spreading, spreading), Random.Range(-spreading, spreading), 0));
-        bullet.GetComponent<proyectileController>().aditionalSpeed = BasicMovement.velocity;
-        bullet.GetComponent<proyectileController>().decal = bulletDecal;
+        bullet.GetComponent<ProyectileController>().aditionalSpeed = BasicMovement.velocity;
+        bullet.GetComponent<ProyectileController>().decal = bulletDecal;
 
         bullet.SetActive(true);
     }

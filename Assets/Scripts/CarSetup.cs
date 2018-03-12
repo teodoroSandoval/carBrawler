@@ -61,7 +61,7 @@ public class CarSetup : MonoBehaviour {
         GameObject[] carColliders = FindGameObjectInChildWithName(transform, "collider");
 
         GameObject carMesh = FindGameObjectInChildWithName(transform, "mesh")[0];
-        carMesh.GetComponent<MeshRenderer>().material = defaultMaterial;
+        //carMesh.GetComponent<MeshRenderer>().material = defaultMaterial;
         foreach (GameObject collider in carColliders) {
             MeshCollider meshColl = carMesh.AddComponent<MeshCollider>();
             meshColl.sharedMesh = collider.GetComponent<MeshFilter>().sharedMesh;
@@ -69,8 +69,6 @@ public class CarSetup : MonoBehaviour {
             meshColl.material = defaultPhMat;
             collider.SetActive(false);
         }
-
-        //GameObject[] axisArray = FindGameObjectInChildWithName(transform, "Axis");
 
         // LOAD WHEELS
         wheelsDirAxis = FindGameObjectInChildWithName(transform, "direction");
@@ -80,7 +78,7 @@ public class CarSetup : MonoBehaviour {
 
         JointSpring spring = new JointSpring();
         spring.spring = 8000;
-        spring.damper = 85;
+        spring.damper = 100;
         spring.targetPosition = 0.3f;
 
         WheelFrictionCurve forwardFrCurve = new WheelFrictionCurve();
@@ -95,7 +93,7 @@ public class CarSetup : MonoBehaviour {
         sideFrCurve.extremumValue = 1f;
         sideFrCurve.asymptoteSlip = 1.5f;
         sideFrCurve.asymptoteValue = 0.75f;
-        sideFrCurve.stiffness = 0.8f;
+        sideFrCurve.stiffness = 1f;
 
         GameObject wheelAsset = Resources.Load<GameObject>("defaultWheel");
 
@@ -186,10 +184,8 @@ public class CarSetup : MonoBehaviour {
 
 
     public static void initMesh(GameObject target, Mesh mesh, Material material) {
-        target.AddComponent<MeshFilter>();
-        target.AddComponent<MeshRenderer>();
-        target.GetComponent<MeshRenderer>().sharedMaterial = material;
-        target.GetComponent<MeshFilter>().mesh = mesh;
+        target.AddComponent<MeshFilter>().mesh = mesh;
+        target.AddComponent<MeshRenderer>().sharedMaterial = material;
     }
 
     static public GameObject[] FindGameObjectInChildWithName(Transform parent, string name) {
@@ -293,5 +289,13 @@ public class CarSetup : MonoBehaviour {
         cross = playerName + "_Jump";
         LShoulder = playerName + "_Launch1";
         RShoulder = playerName + "_Launch2";
+    }
+
+    public void setMaterial(Material newMaterial) {
+
+        GameObject mainMesh = FindGameObjectInChildWithName(transform, "mesh")[0];
+
+        mainMesh.GetComponent<MeshRenderer>().material = newMaterial;
+
     }
 }

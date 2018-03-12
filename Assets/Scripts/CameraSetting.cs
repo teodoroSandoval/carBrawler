@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class CameraSetting : MonoBehaviour {
 
-    private GameObject setCar(GameObject originalCar,Vector3 position, Quaternion rotation , int selfLayer, Camera camera, GameObject canvas) {
+    private GameObject setCar(GameObject originalCar,Vector3 position, Quaternion rotation , int selfLayer, Camera camera, GameObject canvas, Material material) {
 
         GameObject car = Instantiate(originalCar, position, rotation);
+
+        camera.transform.position = (car.transform.forward * -20) + (car.transform.up * 10);
+        camera.transform.LookAt(car.transform);
 
         CarSetup.SetLayerAll(car.transform,selfLayer);
 
@@ -35,10 +38,10 @@ public class CameraSetting : MonoBehaviour {
         car.AddComponent<BasicMovement>();
         car.AddComponent<HealthModule>();
         car.AddComponent<FlyModule>();
-        car.AddComponent<shieldModule>();
-        car.AddComponent<gunModule>();
-        car.AddComponent<missileModule>();
-        car.AddComponent<mineModule>();
+        car.AddComponent<ShieldModule>();
+        car.AddComponent<GunModule>();
+        car.AddComponent<MissileModule>();
+        car.AddComponent<MineModule>();
 
         carSetup.Set();
 
@@ -47,6 +50,7 @@ public class CameraSetting : MonoBehaviour {
         newCanvas.name = "Canvas" + carSetup.playerID;
         car.SetActive(true);
 
+        carSetup.setMaterial(material);
         return car;
     }
 	// Use this for initialization
@@ -55,10 +59,10 @@ public class CameraSetting : MonoBehaviour {
 
         canvas.SetActive(false);
         if (PlayersData.readyCount == 1) {
+            CameraController camContrl = gameObject.AddComponent<CameraController>();
+            GameObject car = setCar(GameObject.Find("Car1"),new Vector3(-0.5f,1.1f,0.5f),Quaternion.AngleAxis(-45,Vector3.up), LayerMask.NameToLayer("player1"), GetComponent<Camera>(), canvas, Resources.Load<Material>("Materials/defaultMaterial"));
 
-            GameObject car = setCar(GameObject.Find("Car1"),new Vector3(-0.5f,1.1f,0.5f),Quaternion.AngleAxis(-45,Vector3.up), LayerMask.NameToLayer("player1"), GetComponent<Camera>(), canvas);
-
-            GetComponent<CameraController>().targetCar = car.transform;
+            camContrl.targetCar = car.transform;
         }
         else {
             
@@ -69,17 +73,22 @@ public class CameraSetting : MonoBehaviour {
                 Camera camera1 = GetComponent<Camera>();
                 camera1.rect = re1;
 
-                GameObject car1 = setCar(GameObject.Find("Car1"), new Vector3(-0.5f, 1.1f, 0.5f), Quaternion.AngleAxis(-45, Vector3.up), LayerMask.NameToLayer("player1"), camera1, canvas);
+                CameraController camContrl1 = gameObject.AddComponent<CameraController>();
 
-                GetComponent<CameraController>().targetCar = car1.transform;
-
+                GameObject car1 = setCar(GameObject.Find("Car1"), new Vector3(-0.5f, 1.1f, 0.5f), Quaternion.AngleAxis(-45, Vector3.up), LayerMask.NameToLayer("player1"), camera1, canvas, Resources.Load<Material>("Materials/blue"));
+                camContrl1.targetCar = car1.transform;
+                //car1.GetComponent<CarSetup>().setMaterial(Resources.Load<Material>("Materials/blue"));
+                
 
                 Camera camera2 = new GameObject("Camera_02").AddComponent<Camera>();
                 camera2.rect = re2;
 
-                GameObject car2 = setCar(GameObject.Find("Car1"), new Vector3(0.5f, 1.1f, -0.5f), Quaternion.AngleAxis(135, Vector3.up), LayerMask.NameToLayer("player2"), camera2, canvas);
+                CameraController camContrl2 = camera2.gameObject.AddComponent<CameraController>();
 
-                camera2.gameObject.AddComponent<CameraController>().targetCar = car2.transform;
+                GameObject car2 = setCar(GameObject.Find("Car1"), new Vector3(0.5f, 1.1f, -0.5f), Quaternion.AngleAxis(135, Vector3.up), LayerMask.NameToLayer("player2"), camera2, canvas, Resources.Load<Material>("Materials/red"));
+                camContrl2.targetCar = car2.transform;
+                //car2.GetComponent<CarSetup>().setMaterial(Resources.Load<Material>("Materials/red"));
+
             }
         }
     }

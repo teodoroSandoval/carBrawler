@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class explosiveController : MonoBehaviour {
+public class ExplosiveController : MonoBehaviour {
     public int layer;
     public bool useSensor = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
@@ -32,23 +32,50 @@ public class explosiveController : MonoBehaviour {
     
     public static void addExplotion(Vector3 position,float force, float radius, float damage, int layer) {
         Collider[] targets = Physics.OverlapSphere(position, radius);
-        List<GameObject> targetList = new List<GameObject>();
+        List<Transform> rootList = new List<Transform>();
+        List<GameObject> objectList = new List<GameObject>();
 
-        foreach(Collider hit in targets) {
-            if (!targetList.Contains(hit.gameObject)) {
-                targetList.Add(hit.gameObject);
-                if (hit.transform.root.tag.Contains("Player") && hit.gameObject.layer != layer) {
-                    float finalDamage = (radius - Vector3.Distance(position, hit.ClosestPoint(position))) / radius * damage;
-                    hit.transform.root.SendMessage("damage", finalDamage);
+        foreach (Collider hit in targets) {
+            if (!rootList.Contains(hit.transform.root)) {
+                rootList.Add(hit.transform.root);
+                if (hit.transform.root.tag.Contains("Player")) {
+                    if (hit.gameObject.layer != layer) {
+                        float finalDamage = (radius - Vector3.Distance(position, hit.ClosestPoint(position))) / radius * damage;
+                        hit.transform.root.SendMessage("damage", finalDamage);
+                    }
+
+                    if (hit.transform.root.GetComponent<HealthModule>().isDead) {
+                        Rigidbody[] rbs = hit.transform.GetComponentsInChildren<Rigidbody>();
+
+                        foreach(Rigidbody rb in rbs) {
+                            rb.AddExplosionForce(force, position, radius);
+                        }
+                    }
+                    else {
+                        hit.attachedRigidbody.AddExplosionForce(force, position, radius);
+                    }
                 }
+                else {
+                    Rigidbody rb = hit.attachedRigidbody;
+                    if (rb != null) {
+                        rb.AddExplosionForce(force, position, radius);
+                    }
+                }
+            }
+
+            if (!objectList.Contains(hit.gameObject)) {
+                objectList.Add(hit.gameObject);
 
                 Rigidbody rb = hit.attachedRigidbody;
                 if (rb != null) {
                     rb.AddExplosionForce(force, position, radius);
                 }
-
             }
         }
+
+        List<Transform> targetList = new List<Transform>();
+
+
     }
 
     private void OnTriggerEnter(Collider other) {

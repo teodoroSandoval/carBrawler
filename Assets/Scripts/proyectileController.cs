@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ProyectileMode { bullet, missile }
-public class proyectileController : MonoBehaviour {
+public class ProyectileController : MonoBehaviour {
     public int layer;
     
     public float speed;
@@ -90,7 +90,7 @@ public class proyectileController : MonoBehaviour {
          
         if (collitionActive) {
             ContactPoint hit = collision.contacts[0];
-            explosiveController.addExplotion(hit.point,explotionForce,explotionRadius,damage,layer);
+            ExplosiveController.addExplotion(hit.point,explotionForce,explotionRadius,damage,layer);
 
             if (!collision.transform.root.tag.Contains("Player")) {
                 GameObject dec = Instantiate(decal, hit.point + (hit.normal * CarSetup.minSurfaceDistance), Quaternion.LookRotation(hit.normal), collision.transform);

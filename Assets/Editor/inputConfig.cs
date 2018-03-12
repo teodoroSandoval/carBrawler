@@ -139,6 +139,7 @@ public class inputConfig : Editor {
                 type = AxisType.JoystickAxis,
                 axis = 3,
                 joyNum = i,
+                invert = true
             });
 
 

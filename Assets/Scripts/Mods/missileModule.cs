@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class missileModule : MonoBehaviour {
+public class MissileModule : MonoBehaviour {
 
     private int layer;
     private GameObject pointerPrefab;
@@ -67,7 +67,7 @@ public class missileModule : MonoBehaviour {
         collider.convex = true;
         missilePrefab.AddComponent<Rigidbody>().mass = 5;
 
-        proyectileController missileController = missilePrefab.AddComponent<proyectileController>();
+        ProyectileController missileController = missilePrefab.AddComponent<ProyectileController>();
         missileController.mode = ProyectileMode.missile;
         missileController.propultion = propultion;
         missileController.damage = missileDamage;
@@ -138,8 +138,8 @@ public class missileModule : MonoBehaviour {
 
             GameObject miss = Instantiate(missilePrefab, cannon.transform.position + offSet + (BasicMovement.velocity * Time.deltaTime), Quaternion.LookRotation(cannon.transform.forward));
             miss.layer = layer;
-            miss.GetComponent<proyectileController>().target = target;
-            miss.GetComponent<proyectileController>().aditionalSpeed = BasicMovement.velocity;
+            miss.GetComponent<ProyectileController>().target = target;
+            miss.GetComponent<ProyectileController>().aditionalSpeed = BasicMovement.velocity;
             miss.SetActive(true);
             miss.GetComponent<Rigidbody>().AddForce(cannon.transform.forward * launchForce, ForceMode.Force);
         }

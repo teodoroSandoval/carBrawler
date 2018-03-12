@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class shieldModule : MonoBehaviour {
+public class ShieldModule : MonoBehaviour {
 
     private int layer;
     private GameObject shieldPrefab;

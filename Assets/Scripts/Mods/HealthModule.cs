@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthModule : MonoBehaviour {
 
-    private float currentHealth;
+    public float currentHealth;
     public float maxHealth = 1000;
     private Slider healthSlider;
     public bool invulnerable = false;
